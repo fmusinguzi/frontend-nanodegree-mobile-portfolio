@@ -398,7 +398,7 @@ var pizzaElementGenerator = function(i) {
   return pizzaContainer;
 };
 
-// resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
+//resizePizzas(size);
 var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
@@ -432,18 +432,18 @@ var resizePizzas = function(size) {
     function sizeSwitcher (size) {
       switch(size) {
         case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
           return 0.5;
+        case "2":
+          return 0.75 ;
+        case "3":
+          return 1
         default:
           console.log("bug in sizeSwitcher");
       }
     }
 
     var newSize = sizeSwitcher(size);
-    var dx = (newSize - oldSize) * windowWidth;
+    var dx = newSize;
 
     return dx;
   }
@@ -451,11 +451,13 @@ var resizePizzas = function(size) {
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
     var thisPizza = document.querySelectorAll(".randomPizzaContainer");
+
     for (var i = 0; i < thisPizza.length; i++) {
 
-      var dx = determineDx(thisPizza[i], size);
+      var dx = determineDx(thisPizza[i].getElementsByTagName("div")[0], size);
       // var newwidth = (thisPizza[i].offsetWidth + dx) + 'px';
-      thisPizza[i].style.transform = "translateX("+ thisPizza[i].offsetWidth + dx+") translateZ(0)";
+
+         thisPizza[i].getElementsByTagName("div")[0].style.transform = "scale(" + dx + ") translateZ(0)";
 
       //thisItem.style.transform = "translateX("+ newLeft +") translateZ(0)";
 
@@ -510,8 +512,7 @@ function updatePositions() {
   //var items = document.querySelectorAll('.mover');
 var scrollPixels= document.body.scrollTop / 1250;
 var items = document.getElementsByClassName('mover');
-var elementObj = {};
-var elementContainer = [];
+
   for (var i = 0; i < items.length; i++) {
     var thisItem = items[i];
     var phase = Math.sin(scrollPixels + (i % 5));
